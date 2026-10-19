@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emberfall — Action RPG</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="renderCanvas"></canvas>
+
+  <!-- ============ HUD ============ -->
+  <div id="hud" class="layer">
+    <div id="orbHealth" class="orb orb-health"><div class="orb-fill"></div><div class="orb-label"><span id="hpText">100</span></div></div>
+    <div id="orbMana" class="orb orb-mana"><div class="orb-fill"></div><div class="orb-label"><span id="mpText">50</span></div></div>
+    <div id="staminaBar"><div id="staminaFill"></div></div>
+
+    <div id="topRight">
+      <canvas id="minimap" width="200" height="200"></canvas>
+      <div id="areaName">Emberfall</div>
+      <div id="questTracker"></div>
+    </div>
+
+    <div id="bossBar" class="hidden"><div id="bossName"></div><div id="bossFillWrap"><div id="bossFill"></div></div></div>
+
+    <div id="bottomBar">
+      <div id="xpBarWrap"><div id="xpBarFill"></div><div id="xpText"></div></div>
+      <div id="skillBar"></div>
+      <div id="beltBar"></div>
+      <div id="goldDisplay"><span class="gold-icon"></span><span id="goldText">0</span></div>
+      <div id="pointBadge" class="hidden"></div>
+    </div>
+
+    <div id="hotkeyHints">
+      <b>LMB</b> move/attack &nbsp; <b>RMB</b> block/parry &nbsp; <b>Space</b> roll &nbsp; <b>1-6</b> skills
+      &nbsp; <b>A/S</b> potions &nbsp; <b>E</b> interact &nbsp; <b>Tab</b> character &nbsp; <b>I</b> inventory
+      &nbsp; <b>K</b> skills &nbsp; <b>M</b> map &nbsp; <b>Y/X</b> rotate &nbsp; <b>Esc</b> menu
+    </div>
+
+    <div id="logFeed"></div>
+    <div id="interactPrompt" class="hidden"></div>
+    <div id="toastCenter" class="hidden"></div>
+    <div id="parryFlash" class="hidden"></div>
+    <div id="dmgFlash" class="hidden"></div>
+  </div>
+
+  <!-- ============ Panels ============ -->
+  <div id="panels" class="layer hidden">
+    <div id="inventoryPanel" class="panel hidden"></div>
+    <div id="characterPanel" class="panel hidden"></div>
+    <div id="skillsPanel" class="panel hidden"></div>
+    <div id="shopPanel" class="panel hidden"></div>
+    <div id="mapPanel" class="panel hidden"></div>
+  </div>
+
+  <div id="dialogPanel" class="hidden"></div>
+  <div id="tooltip" class="hidden"></div>
+
+  <!-- ============ Title ============ -->
+  <div id="titleScreen">
+    <div class="title-inner">
+      <h1 class="game-title">EMBERFALL</h1>
+      <p class="subtitle">The Ember Wards have failed. Five dungeons stir. Take up arms.</p>
+      <div id="classSelect" class="class-select"></div>
+      <div class="title-actions">
+        <button id="btnStart" class="btn btn-primary">Begin</button>
+        <button id="btnLoad" class="btn hidden">Continue</button>
+        <button id="btnWipe" class="btn hidden">Delete Save</button>
+      </div>
+      <div class="title-help">
+        <h3>Controls</h3>
+        <ul>
+          <li><b>Left click</b> — move / attack (hold to keep moving)</li>
+          <li><b>Right click (hold)</b> — raise shield. Raising it <i>just</i> before a hit <b>parries</b> it.</li>
+          <li><b>Space</b> — roll (i-frames). <b>1–6</b> — skills. <b>A / S</b> — drink potion.</li>
+          <li><b>E</b> — interact (chests, shops, portals). <b>Tab / I / K / M</b> — panels.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="deathScreen" class="hidden">
+    <div class="death-inner">
+      <h2>You have fallen</h2>
+      <p id="deathText"></p>
+      <button id="btnRespawn" class="btn btn-primary">Return to Town</button>
+    </div>
+  </div>
+
+  <div id="pauseMenu" class="hidden">
+    <div class="pause-inner">
+      <h2>Paused</h2>
+      <button id="btnResume" class="btn">Resume</button>
+      <button id="btnSave" class="btn">Save Game</button>
+      <div class="settings">
+        <h3>Settings</h3>
+        <label class="set-row"><span>Master volume</span><input id="setVolume" type="range" min="0" max="100" step="5"></label>
+        <label class="set-row"><span>Mute all audio</span><input id="setMute" type="checkbox"></label>
+        <label class="set-row"><span>Ambient music</span><input id="setMusic" type="checkbox"></label>
+        <label class="set-row"><span>Damage numbers</span><input id="setDmg" type="checkbox"></label>
+        <label class="set-row"><span>Screen shake</span><input id="setShake" type="checkbox"></label>
+      </div>
+      <button id="btnQuit" class="btn">Quit to Title</button>
+    </div>
+  </div>
+
+  <div id="victoryScreen" class="hidden">
+    <div class="victory-inner">
+      <h2>The Vale Endures</h2>
+      <p id="victoryText"></p>
+      <ul id="victoryStats" class="victory-stats"></ul>
+      <div class="victory-btns">
+        <button id="btnVictoryKeep" class="btn btn-primary">Keep Playing</button>
+        <button id="btnVictoryTitle" class="btn">Quit to Title</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="levelUpBanner" class="hidden"><span id="levelUpText"></span></div>
+</div>
+
+<script src="./vendor/babylon.js"></script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

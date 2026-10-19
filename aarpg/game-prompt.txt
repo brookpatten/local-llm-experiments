@@ -1,0 +1,25 @@
+
+ I would like for you to build a game that runs in the browser.
+
+ it should be 3d, maybe use babylon.js.
+
+ I want it to be an action rpg like diablo, but with blocking/parrying/rolling mechanics.
+
+ It should have an experience/attribute/class progression system.
+
+ The graphics should be 3d polygonal.
+
+ The setting should be zelda-like, with an overworld and many different kinds of dungeons to explore.  There
+ should be at least one central town with shops.
+
+ There should be a loot system that spawns stat appropriate gear and quantities of gold when enemies die.
+
+ There should class specific skills to enhance combat, weapons, etc.
+
+ There should be an inventory system where the player can choose their armor and weapons.
+
+ Controls should be diablo-like.
+
+ Use Headless chrome to test your work and verify it works as expected.
+
+ Make a plan, then iterate until it's ready to demo.

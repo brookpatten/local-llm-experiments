@@ -1,0 +1,37 @@
+<!doctype html>
+<!--
+  GitHub Pages serves one file per path and has no SPA fallback, so a link to
+  /VisualSail/race/<id> — a path the app knows and the host has never heard of —
+  comes back as this page with a 404.
+
+  The page's only job is to hand that path back to the app. The script puts the
+  path it was served for in the hash and reloads the site root; `main.tsx` takes
+  it out of the hash, puts it back in the address bar, and opens the race it
+  names. The root is not derivable from the address — the address is the missing
+  path — so the build writes it into the `/VisualSail/` placeholder below. Without
+  the script there is still a link, so the page is a door rather than a dead end.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VisualSail</title>
+    <script>
+      (function () {
+        var root = '/VisualSail/'
+        // Only a copy opened from the repository still carries the placeholder;
+        // there, the site root is wherever this file sits.
+        if (root.indexOf('%%') === 0) root = window.location.pathname.replace(/\/404\.html$/, '/')
+        // Once only: if the app itself lands here again, stop and show the link.
+        if (window.location.hash.indexOf('#vs=') !== -1) return
+        window.location.replace(root + '#vs=' + encodeURIComponent(window.location.pathname + window.location.search))
+      })()
+    </script>
+  </head>
+  <body style="background:#0f2027;color:#e6f1f5;font-family:'Segoe UI',Roboto,sans-serif;display:grid;place-items:center;height:100vh;margin:0">
+    <div style="text-align:center">
+      <p>That page is part of the app, not a file on the host.</p>
+      <p><a style="color:#4fc3f7" href="./">Open VisualSail</a></p>
+    </div>
+  </body>
+</html>

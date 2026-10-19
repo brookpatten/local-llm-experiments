@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local LLM Experiments</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-2: #d29922;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+  header h1 { font-size: 2rem; margin: 0 0 .25rem; letter-spacing: -.02em; }
+  header p.tagline { color: var(--muted); margin: 0 0 2.5rem; max-width: 60ch; }
+
+  section { margin-bottom: 3rem; }
+  h2 {
+    font-size: 1.25rem;
+    margin: 0 0 1rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h2 .count { color: var(--muted); font-weight: 400; font-size: .95rem; }
+
+  .prompt-toggle {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: .5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font: inherit;
+    margin-bottom: 1rem;
+  }
+  .prompt-toggle:hover { border-color: var(--accent); }
+  details.prompt {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0;
+  }
+  details.prompt summary {
+    padding: .6rem 1rem;
+    cursor: pointer;
+    color: var(--accent);
+    user-select: none;
+  }
+  details.prompt pre {
+    margin: 0;
+    padding: 1rem 1.25rem 1.25rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: .85rem;
+    line-height: 1.55;
+    color: #c9d1d9;
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1rem; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    transition: border-color .15s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; font-family: var(--mono); }
+  .card p { margin: 0; color: var(--muted); font-size: .9rem; flex: 1; }
+  .card .links { display: flex; gap: .75rem; margin-top: .25rem; }
+  .card a { color: var(--accent); text-decoration: none; font-size: .9rem; }
+  .card a:hover { text-decoration: underline; }
+  .badge {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: .72rem;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    padding: .15rem .5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--accent-2);
+  }
+
+  .note {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-2);
+    border-radius: 6px;
+    padding: .9rem 1.1rem;
+    color: var(--muted);
+    font-size: .92rem;
+  }
+  .note a { color: var(--accent); }
+
+  footer { color: var(--muted); font-size: .85rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Local LLM Experiments</h1>
+    <p class="tagline">Static frontends exported from apps built by locally-run LLMs. Same prompt, different models — see how each one did.</p>
+  </header>
+
+  <section id="aarpg">
+    <h2>Action RPG Game <span class="count">— 3 attempts</span></h2>
+
+    <details class="prompt">
+      <summary>Show the prompt used for all 3 attempts</summary>
+      <pre id="game-prompt">Loading prompt…</pre>
+    </details>
+
+    <div class="cards">
+      <div class="card">
+        <span class="badge">qwen3.8-flash-next</span>
+        <h3>iq3-s</h3>
+        <p>Diablo-style action RPG built by qwen3.8-flash-next (IQ3_S quant).</p>
+        <div class="links">
+          <a href="aarpg/qwen3.8-flash-next-iq3-s/dist/index.html">▶ Play</a>
+          <a href="aarpg/game-prompt.txt">Prompt</a>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge">qwen3.8-flash-next-coder</span>
+        <h3>iq1</h3>
+        <p>Same prompt, coder variant at IQ1 quantization.</p>
+        <div class="links">
+          <a href="aarpg/qwen3.8-flash-next-coder-iq1/dist/index.html">▶ Play</a>
+          <a href="aarpg/game-prompt.txt">Prompt</a>
+        </div>
+      </div>
+      <div class="card">
+        <span class="badge">qwen3.8-27b</span>
+        <h3>mxfp4</h3>
+        <p>Same prompt, 27B model at MXFP4 quantization.</p>
+        <div class="links">
+          <a href="aarpg/qwen3.8-27b-mxfp4/dist/index.html">▶ Play</a>
+          <a href="aarpg/game-prompt.txt">Prompt</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visualsail">
+    <h2>VisualSail Modernization <span class="count">— 1 attempt</span></h2>
+    <div class="cards">
+      <div class="card">
+        <span class="badge">visualsail</span>
+        <h3>Visual modernization</h3>
+        <p>LLM-driven visual overhaul of the VisualSail sailing-racing app (Cesium-based).</p>
+        <div class="links">
+          <a href="https://brookpatten.github.io/VisualSail/">▶ Play</a>
+          <a href="https://github.com/brookpatten/VisualSail">Source</a>
+        </div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:1rem;">
+      The live VisualSail app is hosted from the
+      <a href="https://github.com/brookpatten/VisualSail">legacy VisualSail repo</a> — its build
+      (~230&nbsp;MB of Cesium + 3D assets) is too large to serve from this one.
+    </p>
+  </section>
+
+  <footer>
+    Built with plain HTML/CSS — no frameworks, no build step.
+    <a href="https://github.com/brookpatten/local-llm-experiments">Repo</a>
+  </footer>
+</div>
+
+<script>
+// Pull the prompt text in so there's a single source of truth (game-prompt.txt).
+fetch('aarpg/game-prompt.txt')
+  .then(r => r.ok ? r.text() : Promise.reject(r.status))
+  .then(t => { document.getElementById('game-prompt').textContent = t.trim(); })
+  .catch(() => {
+    document.getElementById('game-prompt').textContent =
+      'Could not load aarpg/game-prompt.txt — see the raw file.';
+  });
+</script>
+</body>
+</html>

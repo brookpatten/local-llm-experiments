@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- VisualSail: a hull on the water with a windward sail. -->
+  <rect width="32" height="32" rx="6" fill="#062a35"/>
+  <path d="M16 4 L16 22 L6 22 Z" fill="#4fc3f7"/>
+  <path d="M18 8 L26 22 L18 22 Z" fill="#7ed957"/>
+  <path d="M4 24 h24 l-3 4 H7 Z" fill="#9cc7e0"/>
+</svg>

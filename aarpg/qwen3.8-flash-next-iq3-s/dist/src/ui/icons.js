@@ -1,0 +1,65 @@
+// Tiny inline SVG icons for items and skills (no external assets).
+const S = (body, vb = '0 0 24 24') => `<svg class="ico-svg" viewBox="${vb}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
+
+const ICONS = {
+  sword: S('<path d="M14 3l7 7-9 9-2-2 4-4-2-2-4 4-2-2 9-9z"/><path d="M4 20l3-3"/>'),
+  axe: S('<path d="M12 3l7 4-3 4-4-2z"/><path d="M11 9L4 20"/>'),
+  mace: S('<rect x="8" y="3" width="8" height="8" rx="2"/><path d="M12 11l-2 10"/>'),
+  dagger: S('<path d="M13 3l6 6-8 8-2-2z"/><path d="M6 21l4-4"/>'),
+  bow: S('<path d="M6 3c8 3 8 15 0 18"/><path d="M6 3l12 9-12 9"/>'),
+  staff: S('<path d="M8 21L17 6"/><circle cx="18" cy="5" r="3"/>'),
+  shield: S('<path d="M12 3l8 3v7c0 5-4 8-8 10-4-2-8-5-8-10V6z"/>'),
+  tome: S('<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 4v16"/>'),
+  quiver: S('<path d="M7 8h10l-2 13H9z"/><path d="M9 3l1 5M15 3l-1 5"/>'),
+  helm: S('<path d="M5 14a7 7 0 0114 0v5H5z"/><path d="M12 14v5"/>'),
+  circlet: S('<path d="M4 15c2-6 14-6 16 0"/><circle cx="12" cy="8" r="2"/>'),
+  chest: S('<path d="M7 4h10l3 4-2 13H6L4 8z"/>'),
+  robe: S('<path d="M8 4l4 3 4-3 3 16H5z"/><path d="M12 7v13"/>'),
+  legs: S('<path d="M7 3h10v7l-2 11h-3l-1-8-1 8H8z"/>'),
+  gloves: S('<path d="M7 21V8a5 5 0 0110 0v13z"/><path d="M12 8v13"/>'),
+  boots: S('<path d="M8 3h5v11h6v7H8z"/>'),
+  ring: S('<circle cx="12" cy="14" r="6"/><circle cx="12" cy="5" r="2.5"/>'),
+  amulet: S('<path d="M8 4c2 4 6 4 8 0"/><circle cx="12" cy="15" r="5"/>'),
+  flask: S('<path d="M10 3h4v5l3 6a5 5 0 01-10 0l3-6z"/><path d="M8 15h8"/>'),
+  torch: S('<path d="M12 3c3 3 3 6 0 8-3-2-3-5 0-8z"/><path d="M12 11v10"/>'),
+  // skills
+  spell: S('<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'),
+  spark: S('<path d="M13 2l-3 9h5l-4 11 1-9H7z"/>'),
+  slash: S('<path d="M4 20C8 12 14 6 21 4"/><path d="M14 4h7v7"/>'),
+  shieldup: S('<path d="M12 3l8 3v7c0 5-4 8-8 10-4-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/>'),
+  leap: S('<path d="M4 20l6-6 4 3 6-9"/><path d="M16 8h4v4"/>'),
+  spin: S('<path d="M12 4a8 8 0 11-7 4"/><path d="M5 8V4h4"/><circle cx="12" cy="12" r="2.5"/>'),
+  skull: S('<circle cx="12" cy="9" r="5"/><path d="M9 14v5h6v-5"/><path d="M10 9h.01M14 9h.01"/>'),
+  arrow: S('<path d="M3 21L21 3"/><path d="M14 3h7v7"/><path d="M8 16l-5 5"/>'),
+  rain: S('<path d="M4 4l6 6M12 3l6 6M4 12l6 6M12 11l6 6"/>'),
+  blink: S('<path d="M4 12h9"/><path d="M10 8l4 4-4 4"/><circle cx="19" cy="12" r="2.5"/>'),
+  trap: S('<path d="M5 5l6 14h2l6-14"/><path d="M5 5h14"/>'),
+  pierce: S('<path d="M2 12h20"/><path d="M16 8l4 4-4 4"/>'),
+  bolt2: S('<path d="M12 2v8l-4 2 4 10 4-10-4-2z"/>'),
+  snow: S('<path d="M12 2v20M3 7l18 10M21 7L3 17"/>'),
+  chain: S('<circle cx="5" cy="12" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="19" cy="14" r="2"/><path d="M7 11l3-4M14 7l4 6"/>'),
+  fire: S('<path d="M12 3c4 5 5 7 5 10a5 5 0 01-10 0c0-3 1-5 5-10z"/>'),
+  meteor: S('<circle cx="16" cy="8" r="4"/><path d="M3 21l7-7M4 14l4 4M9 8l4 4"/>'),
+  wolf: S('<path d="M4 8l3-4 5 3 5-3 3 4-2 10H6z"/><path d="M9 12h.01M15 12h.01"/>'),
+  eye: S('<path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.5"/>'),
+  fist: S('<path d="M6 10V7a2 2 0 014 0v3M10 10V6a2 2 0 014 0v4M14 10V8a2 2 0 014 0v6a6 6 0 01-6 6H8a4 4 0 01-4-4v-4h2"/>'),
+  gold: S('<circle cx="12" cy="12" r="8"/><path d="M9 9h6M9 13h6"/>'),
+  chest_icon: S('<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 12h18M12 8v12"/>'),
+  // skill icon names used by src/data/skills.js
+  cleave: S('<path d="M3 17c5-2 11-8 15-14"/><path d="M3 17c6 2 12 1 16-3"/><path d="M18 3v5h-5"/>'),
+  charge: S('<path d="M3 12h12"/><path d="M11 7l5 5-5 5"/><path d="M19 5v14"/>'),
+  whirl: S('<path d="M12 4a8 8 0 11-6 3"/><path d="M6 3v5h5"/><path d="M12 8a4 4 0 11-3 2"/><path d="M9 8v3h3"/>'),
+  wall: S('<rect x="3" y="7" width="18" height="11" rx="1"/><path d="M3 12h18M9 7v5M15 12v6"/>'),
+  slam: S('<path d="M12 3v9"/><path d="M8 8l4 4 4-4"/><path d="M4 16c2 3 5 5 8 5s6-2 8-5"/><path d="M4 16h16"/>'),
+  execute: S('<path d="M6 21l9-9"/><path d="M11 4l9 5-4 4-5-3z"/><path d="M4 20l3-3"/>'),
+  aim: S('<circle cx="12" cy="12" r="7"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="1.5"/>'),
+  volley: S('<path d="M6 3v10M12 3v10M18 3v10"/><path d="M3 13l3 4 3-4M9 13l3 4 3-4M15 13l3 4 3-4"/>'),
+  roll: S('<path d="M4 15a8 8 0 1114 4"/><path d="M18 20v-5h-5"/><circle cx="12" cy="12" r="2"/>'),
+  bolt: S('<path d="M13 2l-4 9h5l-5 11 2-9H6z"/>'),
+  nova: S('<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>'),
+};
+
+export function itemIcon(gfx) {
+  return ICONS[gfx] || ICONS.spell;
+}
+export function iconNames() { return Object.keys(ICONS); }

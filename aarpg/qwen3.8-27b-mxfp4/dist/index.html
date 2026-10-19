@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Realm of Aetheria</title>
+<!-- built 2026-10-19T00:33:37.297Z -->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; user-select: none; }
+  #game { width: 100vw; height: 100vh; display: block; }
+
+  .hidden { display: none !important; }
+
+  /* ---------- HUD ---------- */
+  #hud { position: fixed; top: 14px; left: 14px; z-index: 10; pointer-events: none; }
+  .bar { width: 240px; height: 16px; background: rgba(0,0,0,0.65); border: 1px solid #555; margin-bottom: 4px; position: relative; }
+  .bar > div { height: 100%; }
+  #hp-fill { background: linear-gradient(#e04a3a, #a02818); }
+  #mp-fill { background: linear-gradient(#4a7ae0, #2848a0); }
+  #xp-fill { background: linear-gradient(#e0c34a, #a08818); }
+  .bar span { position: absolute; width: 100%; text-align: center; top: 0; font-size: 11px; color: #fff; text-shadow: 1px 1px 1px #000; line-height: 15px; font-family: Georgia, serif; }
+  #hud-stats { font-family: Georgia, serif; color: #e8d9a0; font-size: 15px; text-shadow: 1px 1px 2px #000; margin-top: 4px; }
+  #hud-stats b { color: #ffd54a; }
+
+  /* ---------- Hotbar ---------- */
+  #hotbar { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 6px; }
+  .slot { width: 62px; height: 62px; background: rgba(10,10,20,0.8); border: 2px solid #6a5a2a; border-radius: 6px; position: relative; color: #e8d9a0; font-family: Georgia, serif; }
+  .slot .key { position: absolute; top: 2px; left: 5px; font-size: 12px; color: #ffd54a; }
+  .slot .name { position: absolute; bottom: 4px; left: 0; width: 100%; text-align: center; font-size: 9px; padding: 0 2px; line-height: 1.1; }
+  .slot .cd { position: absolute; left: 0; bottom: 0; width: 100%; background: rgba(0,0,0,0.75); pointer-events: none; }
+  .slot.off { opacity: 0.35; }
+
+  /* ---------- Panels ---------- */
+  .panel { position: fixed; z-index: 20; background: rgba(12,12,22,0.94); border: 2px solid #8a6d2f; border-radius: 8px; color: #e8d9a0; font-family: Georgia, serif; padding: 16px; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
+  .panel h2 { color: #ffd54a; margin-bottom: 8px; font-size: 20px; }
+  .panel h3 { color: #c9a227; margin: 10px 0 6px; font-size: 15px; }
+  .panel button { background: #2a2a3a; color: #e8d9a0; border: 1px solid #8a6d2f; border-radius: 4px; padding: 5px 10px; cursor: pointer; font-family: Georgia, serif; font-size: 13px; }
+  .panel button:hover { background: #3a3a52; }
+  .panel button:disabled { opacity: 0.4; cursor: default; }
+
+  #class-select { top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; max-width: 820px; }
+  #class-select h1 { color: #ffd54a; font-size: 34px; margin-bottom: 6px; }
+  #class-select .sub { color: #9a8a5a; margin-bottom: 18px; font-size: 14px; }
+  .class-cards { display: flex; gap: 14px; justify-content: center; }
+  .class-card { width: 210px; padding: 16px; border: 2px solid #6a5a2a; border-radius: 8px; background: rgba(20,20,35,0.9); cursor: pointer; transition: all 0.15s; }
+  .class-card:hover { border-color: #ffd54a; transform: translateY(-4px); box-shadow: 0 0 20px rgba(255,213,74,0.3); }
+  .class-card h3 { margin-bottom: 8px; font-size: 18px; }
+  .class-card p { font-size: 12px; color: #b8a870; line-height: 1.4; margin-bottom: 8px; }
+  .class-card .stats { font-size: 11px; color: #8a8a6a; }
+
+  #char-panel { top: 10%; right: 24px; width: 380px; max-height: 80vh; overflow-y: auto; }
+  .attr-row { display: flex; align-items: center; gap: 10px; margin: 5px 0; font-size: 15px; }
+  .attr-row .lbl { width: 100px; color: #b8a870; }
+  .attr-row .val { flex: 1; }
+  .skill-row { margin: 8px 0; padding: 8px; background: rgba(255,255,255,0.04); border-radius: 4px; }
+  .skill-row .desc { font-size: 11px; color: #9a8a5a; margin-top: 4px; line-height: 1.3; }
+  .skill-row .top { display: flex; align-items: center; gap: 8px; }
+  .skill-row .top b { flex: 1; }
+  .points { font-size: 13px; color: #9a8a5a; margin-bottom: 6px; }
+  .points b { color: #ffd54a; }
+
+  #inv-panel { top: 10%; left: 50%; transform: translateX(-50%); width: 560px; max-height: 80vh; overflow-y: auto; }
+  .equip-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .eq-slot { flex: 1; min-height: 64px; border: 1px solid #6a5a2a; border-radius: 4px; padding: 6px; cursor: pointer; font-size: 11px; background: rgba(255,255,255,0.03); }
+  .eq-slot:hover { border-color: #ffd54a; }
+  .eq-slot .ttl { color: #8a8a6a; font-size: 10px; text-transform: uppercase; }
+  .inv-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .inv-slot { min-height: 64px; border: 1px solid #6a5a2a; border-radius: 4px; padding: 5px; cursor: pointer; font-size: 11px; background: rgba(255,255,255,0.03); }
+  .inv-slot:hover { border-color: #ffd54a; }
+  #item-detail { margin-top: 12px; padding: 12px; border: 1px solid #6a5a2a; border-radius: 4px; background: rgba(0,0,0,0.3); min-height: 80px; }
+  .item-name { font-size: 16px; font-weight: bold; }
+  .item-sub { font-size: 11px; color: #9a8a5a; margin: 3px 0; }
+  .item-stat { font-size: 13px; margin: 2px 0; }
+  .item-actions { margin-top: 8px; }
+
+  #shop-panel { top: 10%; left: 50%; transform: translateX(-50%); width: 460px; max-height: 80vh; overflow-y: auto; }
+  .shop-buy { display: flex; flex-direction: column; gap: 6px; }
+  .shop-buy button { text-align: left; }
+  .shop-sell button { display: block; width: 100%; text-align: left; margin: 4px 0; }
+
+  #help-panel { top: 10%; left: 50%; transform: translateX(-50%); width: 440px; }
+  #help-panel table { font-size: 13px; border-collapse: collapse; }
+  #help-panel td { padding: 4px 8px; }
+  #help-panel td:first-child { color: #ffd54a; width: 150px; }
+
+  /* ---------- Toasts / floaters / banner ---------- */
+  #toasts { position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%); z-index: 15; pointer-events: none; text-align: center; }
+  .toast { font-family: Georgia, serif; font-size: 15px; text-shadow: 1px 1px 2px #000; padding: 3px 10px; animation: toastfade 2.5s forwards; }
+  @keyframes toastfade { 0% { opacity: 0; transform: translateY(8px); } 10% { opacity: 1; transform: none; } 80% { opacity: 1; } 100% { opacity: 0; } }
+
+  #floaters { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 12; }
+  .floater { position: absolute; font-family: Georgia, serif; font-weight: bold; font-size: 18px; text-shadow: 1px 1px 2px #000; transform: translate(-50%, -50%); white-space: nowrap; }
+
+  #npc-labels { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 11; }
+  .npc-label { position: absolute; transform: translate(-50%, -50%); font-family: Georgia, serif; font-size: 13px; color: #ffd54a; text-shadow: 1px 1px 2px #000; white-space: nowrap; }
+
+  #banner { position: fixed; top: 18%; left: 50%; transform: translateX(-50%); z-index: 14; text-align: center; pointer-events: none; font-family: Georgia, serif; animation: bannerfade 3s forwards; }
+  #banner .t { font-size: 34px; color: #ffd54a; text-shadow: 2px 2px 4px #000; }
+  #banner .s { font-size: 16px; color: #c9b87a; text-shadow: 1px 1px 3px #000; }
+  @keyframes bannerfade { 0% { opacity: 0; } 15% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="bar"><div id="hp-fill"></div><span id="hp-text"></span></div>
+  <div class="bar"><div id="mp-fill"></div><span id="mp-text"></span></div>
+  <div class="bar"><div id="xp-fill"></div><span id="xp-text"></span></div>
+  <div id="hud-stats"><b id="class-name"></b> Lv <b id="level-num">1</b> &nbsp;|&nbsp; <span id="gold-num">0</span> gold</div>
+</div>
+
+<!-- Hotbar -->
+<div id="hotbar"></div>
+
+<!-- Class select -->
+<div id="class-select" class="panel">
+  <h1>Realm of Aetheria</h1>
+  <div class="sub">Choose your path, hero. The overworld awaits — four dungeons call beyond the trees.</div>
+  <div class="class-cards">
+    <div class="class-card" onclick="startGame('warrior')">
+      <h3 style="color:#d4552a">Warrior</h3>
+      <p>Master of blade and shield. High damage, high defense. Parries like a dream.</p>
+      <div class="stats">STR 15 · DEX 5 · VIT 15 · INT 2</div>
+    </div>
+    <div class="class-card" onclick="startGame('rogue')">
+      <h3 style="color:#3aa85a">Rogue</h3>
+      <p>Fast, deadly, hard to hit. Strikes from the shadows and vanishes before you can react.</p>
+      <div class="stats">STR 8 · DEX 15 · VIT 10 · INT 2</div>
+    </div>
+    <div class="class-card" onclick="startGame('mage')">
+      <h3 style="color:#5a6ad4">Mage</h3>
+      <p>Wields raw arcane power. Ranged spells that grow devastating with level.</p>
+      <div class="stats">STR 2 · DEX 5 · VIT 8 · INT 20</div>
+    </div>
+  </div>
+</div>
+
+<!-- Character panel -->
+<div id="char-panel" class="panel hidden"></div>
+
+<!-- Inventory panel -->
+<div id="inv-panel" class="panel hidden"></div>
+
+<!-- Shop panel -->
+<div id="shop-panel" class="panel hidden"></div>
+
+<!-- Help panel -->
+<div id="help-panel" class="panel hidden">
+  <h2>Controls</h2>
+  <table>
+    <tr><td>WASD / Arrows</td><td>Move</td></tr>
+    <tr><td>Left Mouse</td><td>Attack</td></tr>
+    <tr><td>Right Mouse</td><td>Move to point</td></tr>
+    <tr><td>Drag / Q, E</td><td>Rotate camera</td></tr>
+    <tr><td>Hold Shift</td><td>Block (50% reduction). Release within 0.3s of a hit to PARRY</td></tr>
+    <tr><td>Space</td><td>Roll (i-frames, 1.5s cooldown)</td></tr>
+    <tr><td>1 – 4</td><td>Class skills</td></tr>
+    <tr><td>5 / 6</td><td>Health / Mana potion</td></tr>
+    <tr><td>F</td><td>Interact (merchant, healer)</td></tr>
+    <tr><td>I / C / H</td><td>Inventory / Character / Help</td></tr>
+    <tr><td>Esc</td><td>Close panels</td></tr>
+  </table>
+  <h3>Tips</h3>
+  <div style="font-size:13px;line-height:1.5">
+    • Parry (block just before impact) stuns the attacker and empowers your next strike.<br>
+    • Elites (glowing, larger) always drop gear.<br>
+    • The healer fountain in town restores you fully.<br>
+    • Spend attribute points with C, skill points on class skills.
+  </div>
+</div>
+
+<div id="toasts"></div>
+<div id="floaters"></div>
+<div id="npc-labels"></div>
+
+<script src="https://cdn.babylonjs.com/babylon.js"></script>
+<script>
+  if (!window.BABYLON) document.write('<script src="https://unpkg.com/babylonjs@7.54.3/babylon.js"><\/script>');
+</script>
+<script src="./assets/game.23f06ff4.js"></script>
+
+
+
+</body>
+</html>
